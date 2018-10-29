@@ -4,7 +4,6 @@ import './App.css';
 
 import User from './components/User';
 import Hobby from './components/Hobby';
-import Restaurant from './components/Restaurants';
 
 class App extends Component {
   constructor(props) {
@@ -99,7 +98,7 @@ class App extends Component {
         this.state.message = 'Ce restaurant a été supprimé'
         this.state.showMessage = true
         console.log("restaurant retiré")
-        this.getDataFromServer(url)
+        this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
 
         setTimeout(() => {
           this.state.showMessage = false
@@ -144,6 +143,8 @@ class App extends Component {
     console.log(this.state.insertMod)
     this.state.insertMod = true;
     console.log(this.state.insertMod)
+    this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
+
 
   }
 
@@ -212,6 +213,7 @@ class App extends Component {
     setTimeout(() => {
       this.state.modifMod = true;
     }, 300)
+    this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
   }
 
   addRestaurant(e) {
@@ -245,20 +247,12 @@ class App extends Component {
 
   handleChange(event) {
     this.setState({ displayNumber: event.target.value });
+    this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
+
   }
 
   render() {
     console.log("render");
-    // let list = 
-
-    // let listAvecComponent = 
-    // 		this.state.hobbies.map((el, index) => {
-    // 		return <Hobby 
-    // 						 name={el}
-    // 						 key={index} 
-    //              removeHobby={this.removeHobby.bind(this)} 
-    // 						 />
-    // 	}
     return (
       <body>
         <div id="app">
