@@ -132,6 +132,8 @@ class App extends Component {
     this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber);
   }
 
+  
+
   showInsertForm() {
     this.state.colMod = true;
     this.state.modifMod = false;
@@ -140,9 +142,6 @@ class App extends Component {
     setTimeout(() => {
       this.state.insertMod = true;
     }, 300)
-    console.log(this.state.insertMod)
-    this.state.insertMod = true;
-    console.log(this.state.insertMod)
     this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
 
 
@@ -190,6 +189,7 @@ class App extends Component {
         rest.cuisine = this.state.modifRestaurant.cuisine
         this.state.message = 'Ce restaurant a été modifié'
         this.state.showMessage = true
+        this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
         setTimeout(() => {
           this.state.showMessage = false
         }, 3000)
@@ -210,10 +210,10 @@ class App extends Component {
     console.log(this.state.modifRestaurant.cuisine)
     this.state.colMod = true;
     this.state.insertMod = false;
+    this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
     setTimeout(() => {
       this.state.modifMod = true;
     }, 300)
-    this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
   }
 
   addRestaurant(e) {
@@ -234,7 +234,7 @@ class App extends Component {
                 .then((res) => {
                     this.state.filteredrestaurants.unshift({ _id: res.result, name: this.state.newRestaurant.nom, cuisine: this.state.newRestaurant.cuisine })
                     this.state.message = 'Ce restaurant a été ajouté'
-                    this.state.showMessage = true
+                    this.setState({showMessage: true}, () => this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)                    )
                     setTimeout(() => {
                         this.state.showMessage = false
                     }, 3000)
@@ -246,9 +246,21 @@ class App extends Component {
 }
 
   handleChange(event) {
-    this.setState({ displayNumber: event.target.value });
-    this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
+    this.setState({ displayNumber: event.target.value }, () => {    this.getDataFromServer('http://localhost:8080/api/restaurants?page=' + this.state.currentPage + '&pagesize=' + this.state.displayNumber)
+  });
+  }
 
+  handleNameChange(event){
+    this.state.modifRestaurant.nom = event.target.value
+    console.log(this.state.modifRestaurant.nom)
+  }
+
+  handleCuisineChange(event){
+    this.state.modifRestaurant.cuisine = event.target.value
+  }
+
+  handleIdChange(event){
+    this.state.modifRestaurant.id = event.target.value
   }
 
   render() {
@@ -322,17 +334,17 @@ class App extends Component {
                       <div className="form-group">
                         <label htmlFor="idInput">Id :</label>
                         <input className="form-control" id="idInput" type="text" name="_id" value="56b9f89be0adc7f00f348cf6"
-                          required placeholder="Id du restaurant à modifier" value={this.state.modifRestaurant.id}></input>
+                          required placeholder="Id du restaurant à modifier" onChange={this.handleIdChange.bind(this)}></input>
                       </div>
                       <div className="form-group">
                         <label htmlFor="restaurantInput">Nom</label>
                         <input className="form-control" id="restaurantInput" type="text" name="nom" required
-                          placeholder="Michel's restaurant" model={this.state.modifRestaurant.nom}></input>
+                          placeholder="Michel's restaurant" onChange={this.handleNameChange.bind(this)}></input>
                       </div>
                       <div className="form-group">
                         <label htmlFor="cuisineInput">Cuisine</label>
                         <input className="form-control" id="cuisineInput" type="text" name="cuisine" required
-                          placeholder="Michel's cuisine" model={this.state.modifRestaurant.cuisine}></input>
+                          placeholder="Michel's cuisine" onChange={this.handleCuisineChange.bind(this)}></input>
                       </div>
                       <button className="btn btn-dark" onClick={this.confirmUpdateRestaurant.bind(this)}>Modifier ce
                                     restaurant</button>
