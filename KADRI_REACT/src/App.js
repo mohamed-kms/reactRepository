@@ -99,6 +99,8 @@ class App extends Component {
         this.state.message = 'Ce restaurant a été supprimé'
         this.state.showMessage = true
         console.log("restaurant retiré")
+        this.getDataFromServer(url)
+
         setTimeout(() => {
           this.state.showMessage = false
         }, 3000)
@@ -106,6 +108,7 @@ class App extends Component {
       .catch(function (err) {
         console.log(err);
       });
+
   }
 
   countRestaurants(gurl) {
@@ -262,7 +265,7 @@ class App extends Component {
           <div className="container" style={{ position: "relative" }}>
             <br></br>
             <h2>Table des restaurants</h2>
-            <button type="button" className="btn btn-dark mb-3" id="createButton" onClick={() => this.showInsertForm()}><i className="fa fa-plus"></i></button>
+            <button type="button" className="btn btn-dark mb-3" id="createButton" onClick={() => this.showInsertForm()}>Insertion<i className="fa fa-plus"></i></button>
             <div style={{ position: "absolute", top: "15px", right: "15px", left: "15px", transition: "0.2s" }} id="succesAlert"
               className={this.state.showMessage ? "alert alert-success" : "d-none"} role="alert">
               <h6 className="alert-heading">Opération réussie</h6>
@@ -365,17 +368,6 @@ class App extends Component {
           </div>
         </div>
           </div>
-          {/* <button onClick={() => this.addHobby()}>Add Hobby</button>
-        <p style={{color: (this.state.hobbies.length < 5) ? 'green' : 'red'}}>
-            Nombre de Hobbies : {this.state.hobbies.length}
-        </p>
-        <ul>
-        {listAvecComponent}
-        </ul> */}
-
-    <p>Un composant User ci-dessous:</p>
-      <User name="Michel Buffa" />
-      <User name="Gabriel Mopolo" />
       </body >
 
         );
